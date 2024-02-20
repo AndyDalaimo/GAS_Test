@@ -24,7 +24,7 @@ public:
 		FGameplayAttribute HealthAttribute;
 
 	// Speed Attribute
-	UPROPERTY(visibleAnywhere, blueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FGameplayAttribute SpeedAttribute;
 
 protected:
