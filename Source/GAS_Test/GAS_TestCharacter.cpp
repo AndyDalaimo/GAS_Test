@@ -52,8 +52,12 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UMyAbilitySystemComponent>(this, TEXT("AbiltySystemComp"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	// Add Attribute set to component
+	AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet);
+	
 
 
+	// AttributeSet = CreateDefaultSubobject<UMyAttributeSet>("AttributeSet");
 
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
@@ -65,7 +69,7 @@ void AGAS_TestCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>("AttributeSet");
+
 	// 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
