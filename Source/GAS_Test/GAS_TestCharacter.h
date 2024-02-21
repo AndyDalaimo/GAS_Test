@@ -6,23 +6,39 @@
 #include "GameFramework/Character.h"
 #include "MyAbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
+#include "AbilitySet.h"
 #include "MyAttributeSet.h"
 #include "InputActionValue.h"
 #include "GAS_TestCharacter.generated.h"
 
+
+USTRUCT()
+struct FAbilityInputToInputActionBinding
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	class UInputAction* InputAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	EAbilityInput AbilityInput;
+};
+
+USTRUCT()
+struct FAbilityInputBindings
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TArray<FAbilityInputToInputActionBinding> Bindings;
+
+};
 
 UCLASS(config=Game)
 class AGAS_TestCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
-	// Ability System Component
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
-	class UMyAbilitySystemComponent* AbilitySystemComponent;
-
-	// Attribute Set to attach to ASC
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
-	class UMyAttributeSet* AttributeSet;
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -54,6 +70,23 @@ public:
 
 protected:
 
+	// Ability System Component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
+	class UMyAbilitySystemComponent* AbilitySystemComponent;
+
+	// Attribute Set to attach to ASC
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
+	class UMyAttributeSet* AttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
+	UAbilitySet* InitialAbilitySet{ nullptr };
+
+	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
+	TSubclassOf<UGameplayEffect> InitialGameplayEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Binding")
+	FAbilityInputBindings AbilityInputBindings;
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -62,6 +95,15 @@ protected:
 
 	// Returns this Actor's AbilitySystemComponent
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	UFUNCTION()
+	void SetupInitialAbilitiesAndEffects();
+
+	UFUNCTION()
+	void AbilityInputBindingPressedHandler(EAbilityInput ablityInput);
+
+	UFUNCTION()
+	void AbilityInputBindingReleasedHandler(EAbilityInput ablityInput);
 			
 
 protected:

@@ -50,10 +50,12 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 
 	// Create AbilitySystemComponent and attach Attribute Set
 	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UMyAbilitySystemComponent>(this, TEXT("AbiltySystemComp"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-	// Add Attribute set to component
-	AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet);
+	// AbilitySystemComponent->SetIsReplicated(true);
+	// AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+	// Create AttributeSet
+	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>(TEXT("AttributeSet"));
+	
 	
 
 
@@ -69,6 +71,10 @@ void AGAS_TestCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	if (HasAuthority())
+	{
+		SetupInitialAbilitiesAndEffects();
+	}
 
 	// 
 	//Add Input Mapping Context
@@ -98,6 +104,15 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGAS_TestCharacter::Look);
+
+		// Set Bindings for AbilityInputs
+		for (const FAbilityInputToInputActionBinding& binding : AbilityInputBindings.Bindings)
+		{
+			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Triggered, this, &ThisClass::AbilityInputBindingPressedHandler, binding.AbilityInput);
+			//EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Triggered, this, &ThisClass::AbilityInputBindingPressedHandler);
+			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Completed, this, &ThisClass::AbilityInputBindingReleasedHandler, binding.AbilityInput);
+			//EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Completed, this, &ThisClass::AbilityInputBindingReleasedHandler);
+		}
 
 	}
 
@@ -139,9 +154,44 @@ void AGAS_TestCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+// Return the ASC
 UAbilitySystemComponent* AGAS_TestCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+
+void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
+{
+	if (IsValid(AbilitySystemComponent) == false || IsValid(AttributeSet) == false)
+	{
+		return;
+	}
+
+	if (IsValid(InitialAbilitySet))
+	{
+		// InitiallyGrantedAbilitySpechandles
+		InitialAbilitySet->GrantAbilitiesToAbilitySystem(AbilitySystemComponent);
+	}
+
+	if (IsValid(InitialGameplayEffect))
+	{
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(InitialGameplayEffect->GetDefaultObject<UGameplayEffect>(), 0.f, AbilitySystemComponent->MakeEffectContext());
+	}
+
+	// AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthAttributeChanged);
+}
+
+// Bind Ability pressed actions onto ASC
+void AGAS_TestCharacter::AbilityInputBindingPressedHandler(EAbilityInput ablityInput)
+{
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<uint32>(ablityInput));
+}
+
+// Bind Ability released actions onto ASC
+void AGAS_TestCharacter::AbilityInputBindingReleasedHandler(EAbilityInput ablityInput)
+{
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<uint32>(ablityInput));
 }
 
 
