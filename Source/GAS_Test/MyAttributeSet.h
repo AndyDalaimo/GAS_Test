@@ -7,6 +7,12 @@
 #include "AbilitySystemComponent.h"
 #include "MyAttributeSet.generated.h"
 
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+		GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
 /**
  * 
  */
@@ -19,31 +25,55 @@ class GAS_TEST_API UMyAttributeSet : public UAttributeSet
 
 public:	
 
-	// Health Attribute
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FGameplayAttribute HealthAttribute;
-
-	// Speed Attribute
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FGameplayAttribute SpeedAttribute;
-
-protected:
-
-	const FGameplayAttribute GetHealthAttribute() { return HealthAttribute; }
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(BlueprintReadOnly, Category = "Game|Health", ReplicatedUsing = OnRep_Health)
 		FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, Health)
 
-	const FGameplayAttribute GetSpeedAttribute() { return SpeedAttribute; }
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FGameplayAttributeData Speed;
+	UPROPERTY(BlueprintReadOnly, Category = "Game|Health", ReplicatedUsing = OnRep_MaxHealth)
+		FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, MaxHealth)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Game|Stamina", ReplicatedUsing = OnRep_Stamina)
+		FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, Stamina)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Game|Stamina", ReplicatedUsing = OnRep_MaxStamina)
+		FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, MaxStamina)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Game|Speed", ReplicatedUsing = OnRep_MoveSpeed)
+		FGameplayAttributeData MoveSpeed;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, MoveSpeed)
+
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 
+protected:
 
-	float GetHealth() const;
-	void SetHealth(float NewVal);
+	/**
+	* These OnRep functions exist to make sure that the ability system internal representations are synchronized properly during replication
+	**/
 
-	float GetSpeed() const;
-	void SetSpeed(float NewVal);
+	// Helper function to proportionally adjust the value of an attribute when it's associated max attribute changes.
+	// (i.e. When MaxHealth increases, Health increases by an amount that maintains the same percentage as before)
+	void AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty);
+
+	UFUNCTION()
+		virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
+	
+	UFUNCTION()
+		virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+	
+	UFUNCTION()
+		virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
+	
+	UFUNCTION()
+		virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+	
+	UFUNCTION()
+		virtual void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
 
 };

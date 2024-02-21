@@ -22,7 +22,7 @@ class AGAS_TestCharacter : public ACharacter, public IAbilitySystemInterface
 
 	// Attribute Set to attach to ASC
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
-	const class UMyAttributeSet* AttributeSet;
+	class UMyAttributeSet* AttributeSet;
 
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

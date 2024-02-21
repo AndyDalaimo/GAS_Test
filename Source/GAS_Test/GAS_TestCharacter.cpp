@@ -53,7 +53,6 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>("AttributeSet");
 
 
 
@@ -65,6 +64,8 @@ void AGAS_TestCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>("AttributeSet");
 	// 
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
