@@ -75,7 +75,7 @@ protected:
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
 	// Attribute Set to attach to ASC
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
 	class UMyAttributeSet* AttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
@@ -104,6 +104,9 @@ protected:
 
 	UFUNCTION()
 	void AbilityInputBindingReleasedHandler(EAbilityInput ablityInput);
+
+	UFUNCTION(BlueprintPure)
+		float GetHealth();
 			
 
 protected:

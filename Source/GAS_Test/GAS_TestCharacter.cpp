@@ -50,16 +50,11 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 
 	// Create AbilitySystemComponent and attach Attribute Set
 	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UMyAbilitySystemComponent>(this, TEXT("AbiltySystemComp"));
-	// AbilitySystemComponent->SetIsReplicated(true);
-	// AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	// Create AttributeSet
 	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>(TEXT("AttributeSet"));
-	
-	
-
-
-	// AttributeSet = CreateDefaultSubobject<UMyAttributeSet>("AttributeSet");
 
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
@@ -192,6 +187,11 @@ void AGAS_TestCharacter::AbilityInputBindingPressedHandler(EAbilityInput ablityI
 void AGAS_TestCharacter::AbilityInputBindingReleasedHandler(EAbilityInput ablityInput)
 {
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<uint32>(ablityInput));
+}
+
+float AGAS_TestCharacter::GetHealth()
+{
+	return 0.0f;
 }
 
 
