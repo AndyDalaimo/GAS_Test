@@ -21,7 +21,7 @@ class GAS_TEST_API UMyAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 
-	UMyAttributeSet();
+	// UMyAttributeSet();
 
 public:	
 
@@ -63,21 +63,21 @@ protected:
 
 	// Helper function to proportionally adjust the value of an attribute when it's associated max attribute changes.
 	// (i.e. When MaxHealth increases, Health increases by an amount that maintains the same percentage as before)
-	void AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty);
+	// void AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty);
 
 	UFUNCTION()
-		virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
+		void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	
 	UFUNCTION()
-		virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+		void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
 	UFUNCTION()
-		virtual void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
+		void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
 	
 	UFUNCTION()
-		virtual void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+		void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
 	
 	UFUNCTION()
-		virtual void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
+		void OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed);
 
 };

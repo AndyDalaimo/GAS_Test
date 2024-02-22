@@ -75,17 +75,23 @@ protected:
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
 	// Attribute Set to attach to ASC
-	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
-	UMyAttributeSet* AttributeSet { nullptr };
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem)
+	UMyAttributeSet* AttributeSet { nullptr };*/
+
+	UPROPERTY()
+	const UMyAttributeSet* AttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
-	UAbilitySet* InitialAbilitySet{ nullptr };
+	UAbilitySet* InitialAbilitySet { nullptr };
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
 	TSubclassOf<UGameplayEffect> InitialGameplayEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Binding")
 	FAbilityInputBindings AbilityInputBindings;
+
+	UPROPERTY(Transient)
+	TArray<FGameplayAbilitySpecHandle> InitiallyGrantedAbilitySpecHandles;
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);

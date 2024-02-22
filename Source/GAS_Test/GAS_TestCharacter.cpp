@@ -49,10 +49,7 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	// Create AbilitySystemComponent and attach Attribute Set
-	AbilitySystemComponent = ObjectInitializer.CreateDefaultSubobject<UMyAbilitySystemComponent>(this, TEXT("AbiltySystemComp"));
-	AbilitySystemComponent->SetIsReplicated(true);
-	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
-
+	AbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(TEXT("AbiltySystemComp"));
 	// Create AttributeSet
 	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>(TEXT("AttributeSet"));
 
@@ -65,6 +62,9 @@ void AGAS_TestCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	// Instantiate the Attribute set onto the ASC
+	AttributeSet = AbilitySystemComponent->GetSet<UMyAttributeSet>();
 
 	if (HasAuthority())
 	{
@@ -166,7 +166,7 @@ void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
 	if (IsValid(InitialAbilitySet))
 	{
 		// InitiallyGrantedAbilitySpechandles
-		InitialAbilitySet->GrantAbilitiesToAbilitySystem(AbilitySystemComponent);
+		InitiallyGrantedAbilitySpecHandles.Append(InitialAbilitySet->GrantAbilitiesToAbilitySystem(AbilitySystemComponent));
 	}
 
 	if (IsValid(InitialGameplayEffect))
@@ -199,7 +199,7 @@ void AGAS_TestCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& 
 
 float AGAS_TestCharacter::GetHealth() const
 {
-	if (IsValid(AttributeSet))
+	if (IsValid(AttributeSet) == false)
 	{
 		return 0.f;
 	}

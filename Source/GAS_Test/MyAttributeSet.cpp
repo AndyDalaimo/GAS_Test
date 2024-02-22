@@ -7,10 +7,10 @@
 #include "GameplayEffect.h"
 #include "GameplayEffectExtension.h"
 
-UMyAttributeSet::UMyAttributeSet()
+/*UMyAttributeSet::UMyAttributeSet()
 {
 
-}
+}*/
 
 
 // Clamp values before changing them
@@ -25,26 +25,26 @@ void UMyAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
-	else if (Attribute == GetMaxHealthAttribute())
+	else if (Attribute == GetMoveSpeedAttribute())
+	{
+		// Cannot slow less than 150 units/s and cannot boost more than 1000 units/s
+		NewValue = FMath::Clamp<float>(NewValue, 150, 1000);
+	}
+	/*else if (Attribute == GetMaxHealthAttribute())
 	{
 		AdjustAttributeForMaxChange(Health, MaxHealth, NewValue, GetHealthAttribute());
 	}
 	else if (Attribute == GetMaxStaminaAttribute())
 	{
 		AdjustAttributeForMaxChange(Stamina, MaxStamina, NewValue, GetMaxStaminaAttribute());
-	}
-	else if (Attribute == GetMoveSpeedAttribute())
-	{
-		// Cannot slow less than 150 units/s and cannot boost more than 1000 units/s
-		NewValue = FMath::Clamp<float>(NewValue, 150, 1000);
-	}
+	}*/
 }
 
 void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
+	/*FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
 	UAbilitySystemComponent* Source = Context.GetOriginalInstigatorAbilitySystemComponent();
 	const FGameplayTagContainer& SourceTags = *Data.EffectSpec.CapturedSourceTags.GetAggregatedTags();
 	FGameplayTagContainer SpecAssetTags;
@@ -91,17 +91,17 @@ void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		{
 			SourceActor = Context.GetEffectCauser();
 		}
-	}
+	}*/
 
-	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	/*if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
 	}
 	else if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
 		SetStamina(FMath::Clamp(GetStamina(), 0.0f, GetMaxStamina()));
-	}
-	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	}*/
+	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
 		// store local copy of the amaount of damage done and clear the damage attribute
 		const float LocalDamageDone = GetDamage();
@@ -126,7 +126,7 @@ void UMyAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 }
 
 
-void UMyAttributeSet::AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute, 
+/*void UMyAttributeSet::AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute,
 	const FGameplayAttributeData& MaxAttribute, float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty)
 {
 	UAbilitySystemComponent* AbilityComp = GetOwningAbilitySystemComponent();
@@ -139,7 +139,7 @@ void UMyAttributeSet::AdjustAttributeForMaxChange(FGameplayAttributeData& Affect
 
 		AbilityComp->ApplyModToAttributeUnsafe(AffectedAttributeProperty, EGameplayModOp::Additive, NewDelta);
 	}
-}
+}*/
 
 
 // ------------------------------------------------------------------------
