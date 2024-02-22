@@ -8,9 +8,9 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySet.h"
 #include "MyAttributeSet.h"
+#include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
 #include "GAS_TestCharacter.generated.h"
-
 
 USTRUCT()
 struct FAbilityInputToInputActionBinding
@@ -76,7 +76,7 @@ protected:
 
 	// Attribute Set to attach to ASC
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
-	class UMyAttributeSet* AttributeSet;
+	UMyAttributeSet* AttributeSet { nullptr };
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
 	UAbilitySet* InitialAbilitySet{ nullptr };
@@ -105,8 +105,14 @@ protected:
 	UFUNCTION()
 	void AbilityInputBindingReleasedHandler(EAbilityInput ablityInput);
 
+	void OnHealthAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const;
+
 	UFUNCTION(BlueprintPure)
-		float GetHealth();
+		float GetHealth() const;
+
+	UFUNCTION(BlueprintNativeEvent)
+		void UpdateHealthText();
+	void UpdateHealthText_Implementation() {  }
 			
 
 protected:

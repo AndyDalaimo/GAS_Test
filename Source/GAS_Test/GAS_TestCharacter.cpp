@@ -174,7 +174,7 @@ void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
 		AbilitySystemComponent->ApplyGameplayEffectToSelf(InitialGameplayEffect->GetDefaultObject<UGameplayEffect>(), 0.f, AbilitySystemComponent->MakeEffectContext());
 	}
 
-	// AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthAttributeChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetHealthAttribute()).AddUObject(this, &AGAS_TestCharacter::OnHealthAttributeChanged);
 }
 
 // Bind Ability pressed actions onto ASC
@@ -189,11 +189,20 @@ void AGAS_TestCharacter::AbilityInputBindingReleasedHandler(EAbilityInput ablity
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<uint32>(ablityInput));
 }
 
-float AGAS_TestCharacter::GetHealth()
+void AGAS_TestCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const
 {
-	return 0.0f;
+	if (FMath::IsNearlyEqual(onAttributeChangeData.NewValue, 0.0f) && onAttributeChangeData.OldValue > 0)
+	{
+		// When health reaches zero, initiate some death sequence 
+	}
 }
 
-
-
+float AGAS_TestCharacter::GetHealth() const
+{
+	if (IsValid(AttributeSet))
+	{
+		return 0.f;
+	}
+	return AttributeSet->GetHealth();
+}
 
