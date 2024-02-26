@@ -85,8 +85,10 @@ void ABasePickup::PickupItem(AGAS_TestCharacter* Pawn)
 		GivePickupTo(Pawn);
 		InteractingCharRef = Pawn;
 		bIsActive = false;
+		
 		// TODO ----------- TODO
 		// Call some functionality to play sound, etc. 
+		K2_OnPickedUp();
 		// TODO ----------- TODO
 
 		if (bCanRespawn && RespawnTime > 0.0f)
@@ -112,12 +114,16 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 	if (!ASC)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s Pawn's ASC is null."), *FString(__FUNCTION__));
+		UE_LOG(LogTemp, Error, TEXT("%s Pawn's ASC is null."), *FString(Pawn->GetName()));
 		return;
 	}
 
+	UE_LOG(LogTemp, Display, TEXT("%s Pawn's ASC is Active."), *FString(Pawn->GetName()));
+
 	// Add Gameplay ability to the Pawn's Ability Set
-	for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+	// TODO ----------------------------------TODO
+	// Add Ability Set to BP Pickup
+	/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
 	{
 		if (!SetItem.GameplayAbility)
 		{
@@ -126,10 +132,11 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
 		ASC->GiveAbilityAndActivateOnce(AbilitySpec);
-	}
+	}*/
 
 	// Create Gameplay effect context to Add to pawn
-	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	// FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	FGameplayEffectContextHandle EffectContext = Pawn->GetGameplayEffectContexthandle();
 	EffectContext.AddSourceObject(this);
 
 	// Add Gameplay Effect to Ability System Comp of interacting Pawn
@@ -141,13 +148,10 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 		}
 
 		// TODO -- Change when Characters have a Level associated with them
-		FGameplayEffectSpecHandle NewHandle = ASC->MakeOutgoingSpec(EffectClass, 0.f, EffectContext);
-
-		if (NewHandle.IsValid())
-		{
-			ASC->ApplyGameplayEffectSpecToSelf(*NewHandle.Data.Get());
-		}
+		ASC->ApplyGameplayEffectToSelf(EffectClass->GetDefaultObject<UGameplayEffect>(), 0.f, EffectContext);
+		UE_LOG(LogTemp, Display, TEXT("%d Invulnerable tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.Invulnerable")));
 	}
+
 	 
 }
 

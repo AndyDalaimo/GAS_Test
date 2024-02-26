@@ -171,7 +171,9 @@ void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
 
 	if (IsValid(InitialGameplayEffect))
 	{
-		AbilitySystemComponent->ApplyGameplayEffectToSelf(InitialGameplayEffect->GetDefaultObject<UGameplayEffect>(), 0.f, AbilitySystemComponent->MakeEffectContext());
+		GEContexthandle = AbilitySystemComponent->MakeEffectContext();
+		// AbilitySystemComponent->ApplyGameplayEffectToSelf(InitialGameplayEffect->GetDefaultObject<UGameplayEffect>(), 0.f, AbilitySystemComponent->MakeEffectContext());
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(InitialGameplayEffect->GetDefaultObject<UGameplayEffect>(), 0.f, GEContexthandle);
 	}
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetHealthAttribute()).AddUObject(this, &AGAS_TestCharacter::OnHealthAttributeChanged);
@@ -210,5 +212,11 @@ UAbilitySet* AGAS_TestCharacter::GetAbilitySet()
 {
 	if (InitialAbilitySet != nullptr) return nullptr;
 	else return InitialAbilitySet;
+}
+
+FGameplayEffectContextHandle AGAS_TestCharacter::GetGameplayEffectContexthandle()
+{
+	if (GEContexthandle.IsValid()) return GEContexthandle;
+	else return FGameplayEffectContextHandle();
 }
 

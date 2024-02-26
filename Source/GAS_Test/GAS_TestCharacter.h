@@ -73,6 +73,9 @@ public:
 	// Returns this Actor's AbilitySet
 	UFUNCTION(BlueprintCallable)
 		UAbilitySet* GetAbilitySet();
+
+	UFUNCTION(BlueprintCallable)
+		FGameplayEffectContextHandle GetGameplayEffectContexthandle();
 	
 
 protected:
@@ -93,6 +96,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
 	TSubclassOf<UGameplayEffect> InitialGameplayEffect;
+
+	FGameplayEffectContextHandle GEContexthandle;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Binding")
 	FAbilityInputBindings AbilityInputBindings;

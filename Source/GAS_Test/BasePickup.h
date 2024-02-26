@@ -53,6 +53,10 @@ protected:
 	UFUNCTION()
 		virtual void OnRep_IsActive();
 
+	// Blueprint implementable effects
+	UFUNCTION(BlueprintImplementableEvent, Meta = (DisplayName = "OnPickedUp"))
+		void K2_OnPickedUp();
+
 
 	
 public:	
