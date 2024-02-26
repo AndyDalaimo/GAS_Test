@@ -206,3 +206,9 @@ float AGAS_TestCharacter::GetHealth() const
 	return AttributeSet->GetHealth();
 }
 
+UAbilitySet* AGAS_TestCharacter::GetAbilitySet()
+{
+	if (InitialAbilitySet != nullptr) return nullptr;
+	else return InitialAbilitySet;
+}
+

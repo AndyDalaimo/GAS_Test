@@ -66,6 +66,13 @@ class AGAS_TestCharacter : public ACharacter, public IAbilitySystemInterface
 
 public:
 	AGAS_TestCharacter(const FObjectInitializer& ObjectInitializer);
+
+	// Returns this Actor's AbilitySystemComponent
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	// Returns this Actor's AbilitySet
+	UFUNCTION(BlueprintCallable)
+		UAbilitySet* GetAbilitySet();
 	
 
 protected:
@@ -98,9 +105,6 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-
-	// Returns this Actor's AbilitySystemComponent
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UFUNCTION()
 	void SetupInitialAbilitiesAndEffects();
