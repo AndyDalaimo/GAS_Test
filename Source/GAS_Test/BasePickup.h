@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GAS_TestCharacter.h"
 #include "Components/CapsuleComponent.h"
-#include "AbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
 #include "Kismet/GameplayStatics.h"
 #include "BasePickup.generated.h"
 
@@ -14,8 +15,37 @@ class GAS_TEST_API ABasePickup : public AActor
 {
 	GENERATED_BODY()
 
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pickup", meta = (AllowPrivateAccess = "true"))
 	class UCapsuleComponent* CollisionComp;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	FGameplayTagContainer RestrictedPickupTags;
+
+	// UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_IsActive, Category = "Pickup")
+	// bool bIsActive;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	bool bCanRespawn;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	float RespawnTime;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	TArray<TSubclassOf<class UGameplayAbility>> AbilityClasses;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	TArray<TSubclassOf<class UGameplayEffect>> EffectClasses;
+
+	// Reference to Character interacting with this Pickup
+	// UPROPERTY(BlueprintReadOnly, Replicated)
+	// AGAS_TestCharacter* InteractingCharRef;
+
+	// -----------------------------------------------------
+	// ------ Helper Functions for Pickup Interaction ------
+	// -----------------------------------------------------
+
+
 	
 public:	
 	// Sets default values for this actor's properties

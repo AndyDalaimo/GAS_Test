@@ -2,6 +2,8 @@
 
 
 #include "BasePickup.h"
+#include "AbilitySystemComponent.h"
+
 
 // Sets default values
 ABasePickup::ABasePickup()
