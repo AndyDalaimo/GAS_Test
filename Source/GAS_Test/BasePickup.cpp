@@ -130,13 +130,13 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 			continue;
 		}
 
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 0, static_cast<int32>(SetItem.InputKey), this);
 		ASC->GiveAbilityAndActivateOnce(AbilitySpec);
 	}*/
 
 	// Create Gameplay effect context to Add to pawn
-	// FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
-	FGameplayEffectContextHandle EffectContext = Pawn->GetGameplayEffectContexthandle();
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	// FGameplayEffectContextHandle EffectContext = Pawn->GetGameplayEffectContexthandle();
 	EffectContext.AddSourceObject(this);
 
 	// Add Gameplay Effect to Ability System Comp of interacting Pawn
@@ -148,11 +148,11 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 		}
 
 		// TODO -- Change when Characters have a Level associated with them
-		ASC->ApplyGameplayEffectToSelf(EffectClass->GetDefaultObject<UGameplayEffect>(), 0.f, EffectContext);
-		UE_LOG(LogTemp, Display, TEXT("%d Invulnerable tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.Invulnerable")));
+		FGameplayEffectSpecHandle NewHandle = ASC->MakeOutgoingSpec(EffectClass, 0.f, EffectContext);
+		ASC->ApplyGameplayEffectSpecToSelf(*NewHandle.Data.Get());
+		// Debug Print ---------------------------------------------- Debug Print
+		UE_LOG(LogTemp, Display, TEXT("%d SpeedBoost tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.SpeedBoost")));
 	}
-
-	 
 }
 
 
@@ -169,5 +169,6 @@ void ABasePickup::OnRep_IsActive()
 		// TODO --------------------- TODO
 		// Create PickUp help function 
 		// TODO --------------------- TODO
+		K2_OnPickedUp();
 	}
 }

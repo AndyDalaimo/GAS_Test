@@ -58,6 +58,20 @@ void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			SetHealth(FMath::ClampAngle(NewHealth, 0.0f, GetMaxHealth()));
 		}
 	}
+	else if (Data.EvaluatedData.Attribute == GetMoveSpeedAttribute())
+	{
+		// store local copy of the amount of damage done and clear the move speed attribute
+		const float SpeedBoost = GetMoveSpeed();
+		//SetMoveSpeed(0.f);
+		UE_LOG(LogTemp, Warning, TEXT("Move Speed Change"));
+
+		if (SpeedBoost > 0.0f)
+		{
+			// Apply Speed Boost and then clamp it
+			const float NewSpeed = GetMoveSpeed() + SpeedBoost;
+			SetMoveSpeed(FMath::ClampAngle(NewSpeed, 0.0f, 1000.f));
+		}
+	}
 
 }
 
