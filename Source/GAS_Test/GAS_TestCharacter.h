@@ -120,10 +120,15 @@ protected:
 	UFUNCTION()
 	void AbilityInputBindingReleasedHandler(EAbilityInput ablityInput);
 
+	// On Changes to Player's Attributes
 	void OnHealthAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const;
+	void OnMoveSpeedAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const;
 
 	UFUNCTION(BlueprintPure)
 		float GetHealth() const;
+
+	UFUNCTION(BlueprintPure)
+		float GetMoveSpeed() const;
 
 	UFUNCTION(BlueprintNativeEvent)
 		void UpdateHealthText();

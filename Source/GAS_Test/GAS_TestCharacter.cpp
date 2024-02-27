@@ -177,6 +177,7 @@ void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
 	}
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetHealthAttribute()).AddUObject(this, &AGAS_TestCharacter::OnHealthAttributeChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(UMyAttributeSet::GetMoveSpeedAttribute()).AddUObject(this, &AGAS_TestCharacter::OnMoveSpeedAttributeChanged);
 }
 
 // Bind Ability pressed actions onto ASC
@@ -191,6 +192,12 @@ void AGAS_TestCharacter::AbilityInputBindingReleasedHandler(EAbilityInput ablity
 	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<uint32>(ablityInput));
 }
 
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------- On Player's Attributes Changed ------------------------------------
+// ---------------------------------------------------------------------------------------------------
+
+
+
 void AGAS_TestCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const
 {
 	if (FMath::IsNearlyEqual(onAttributeChangeData.NewValue, 0.0f) && onAttributeChangeData.OldValue > 0)
@@ -199,6 +206,17 @@ void AGAS_TestCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& 
 	}
 }
 
+void AGAS_TestCharacter::OnMoveSpeedAttributeChanged(const FOnAttributeChangeData& onAttributeChangeData) const
+{
+	GetCharacterMovement()->MaxWalkSpeed = GetMoveSpeed();
+}
+
+
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------- Getters for Player's Attribute Set --------------------------------
+// ---------------------------------------------------------------------------------------------------
+
+
 float AGAS_TestCharacter::GetHealth() const
 {
 	if (IsValid(AttributeSet) == false)
@@ -206,6 +224,15 @@ float AGAS_TestCharacter::GetHealth() const
 		return 0.f;
 	}
 	return AttributeSet->GetHealth();
+}
+
+float AGAS_TestCharacter::GetMoveSpeed() const
+{
+	if (IsValid(AttributeSet) == false)
+	{
+		return 0.f;
+	}
+	return AttributeSet->GetMoveSpeed();
 }
 
 UAbilitySet* AGAS_TestCharacter::GetAbilitySet()

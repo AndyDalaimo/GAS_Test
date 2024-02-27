@@ -62,14 +62,13 @@ void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		// store local copy of the amount of damage done and clear the move speed attribute
 		const float SpeedBoost = GetMoveSpeed();
-		//SetMoveSpeed(0.f);
-		UE_LOG(LogTemp, Warning, TEXT("Move Speed Change"));
+		SetMoveSpeed(0.f);
 
 		if (SpeedBoost > 0.0f)
 		{
 			// Apply Speed Boost and then clamp it
 			const float NewSpeed = GetMoveSpeed() + SpeedBoost;
-			SetMoveSpeed(FMath::ClampAngle(NewSpeed, 0.0f, 1000.f));
+			SetMoveSpeed(NewSpeed);
 		}
 	}
 
