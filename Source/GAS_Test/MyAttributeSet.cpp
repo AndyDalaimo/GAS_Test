@@ -68,7 +68,7 @@ void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		{
 			// Apply Speed Boost and then clamp it
 			const float NewSpeed = GetMoveSpeed() + SpeedBoost;
-			SetMoveSpeed(NewSpeed);
+			SetMoveSpeed(SpeedBoost);
 		}
 	}
 

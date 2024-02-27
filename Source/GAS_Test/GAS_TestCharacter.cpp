@@ -241,6 +241,9 @@ UAbilitySet* AGAS_TestCharacter::GetAbilitySet()
 	else return InitialAbilitySet;
 }
 
+
+// MIGHT NOT NEED THIS
+// On Gameplay Effects, the pickup class will create new EffectContext to add to ASC of Pawn
 FGameplayEffectContextHandle AGAS_TestCharacter::GetGameplayEffectContexthandle()
 {
 	if (GEContexthandle.IsValid()) return GEContexthandle;
