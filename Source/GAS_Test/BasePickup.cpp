@@ -123,16 +123,23 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 	// Add Gameplay ability to the Pawn's Ability Set
 	// TODO ----------------------------------TODO
 	// Add Ability Set to BP Pickup
-	/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+	if (IsValid(AbilitySet))
 	{
-		if (!SetItem.GameplayAbility)
-		{
-			continue;
-		}
 
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 0, static_cast<int32>(SetItem.InputKey), this);
-		ASC->GiveAbilityAndActivateOnce(AbilitySpec);
-	}*/
+		for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+		{
+			if (!SetItem.GameplayAbility)
+			{
+				continue;
+			}
+
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
+			ASC->GiveAbility(AbilitySpec);
+		}
+	}
+	else {
+		UE_LOG(LogTemp, Display, TEXT("Ability Set Attached to Pickup is not valid"));
+	}
 
 	// Create Gameplay effect context to Add to pawn
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();

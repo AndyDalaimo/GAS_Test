@@ -33,7 +33,7 @@ protected:
 	float RespawnTime;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
-	UAbilitySet* AbilitySet;
+	UAbilitySet* AbilitySet { nullptr };
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	TArray<TSubclassOf<class UGameplayEffect>> EffectClasses;
