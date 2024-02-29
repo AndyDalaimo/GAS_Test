@@ -10,6 +10,15 @@
 #include "GAS_TestCharacter.h"
 #include "GameplayEffectTriggerVolume.generated.h"
 
+UENUM(BlueprintType)
+enum class ERemoveEffectOnExit : uint8
+{
+	None = 0 UMETA(Hidden),
+	RemoveEffect = 1,
+	KeepEffect = 2
+};
+
+
 UCLASS()
 class GAS_TEST_API AGameplayEffectTriggerVolume : public AActor
 {
@@ -27,6 +36,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_IsActive, Category = "GETriggerVolume")
 		bool bIsActive;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GETriggerVolume")
+		ERemoveEffectOnExit EffectUpdateOnExit = ERemoveEffectOnExit::None;
 
 	// -----------------------------------------------------
 	// ------ Helper Functions for Actor Interactions ------

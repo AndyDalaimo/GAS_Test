@@ -84,7 +84,8 @@ void AGameplayEffectTriggerVolume::OverlappedVolume(AGAS_TestCharacter* Pawn)
 
 void AGameplayEffectTriggerVolume::ExitedVolume(AGAS_TestCharacter* Pawn)
 {
-	RemoveEffectFrom(Pawn);
+	// Only remove the Gameplay Effect on exit if assigned by Trigger Volume
+	if (EffectUpdateOnExit == ERemoveEffectOnExit::RemoveEffect) RemoveEffectFrom(Pawn);
 	bIsActive = true;
 
 	// Trigger Gameplay Cues, etc. 
@@ -146,7 +147,7 @@ void AGameplayEffectTriggerVolume::RemoveEffectFrom(AGAS_TestCharacter* Pawn)
 			continue;
 		}
 
-		ASC->RemoveActiveGameplayEffectBySourceEffect(EffectClass, nullptr, -1);
+		ASC->RemoveActiveGameplayEffectBySourceEffect(EffectClass, nullptr, 1);
 	}
 }
 
