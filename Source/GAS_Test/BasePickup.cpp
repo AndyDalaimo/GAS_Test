@@ -63,7 +63,8 @@ void ABasePickup::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
 
 bool ABasePickup::CanBePickedUp(AGAS_TestCharacter* TestCharacter) const
 {
-	return bIsActive && TestCharacter && IsValid(this) && !TestCharacter->GetAbilitySystemComponent()->HasAnyMatchingGameplayTags(RestrictedPickupTags);
+	return bIsActive && TestCharacter && IsValid(this) && 
+		!TestCharacter->GetAbilitySystemComponent()->HasAnyMatchingGameplayTags(RestrictedPickupTags);
 }
 
 // Override function called when actor overlaps with Pawn
@@ -71,7 +72,7 @@ void ABasePickup::NotifyActorBeginOverlap(AActor* Other)
 {
 	if (GetLocalRole() == ROLE_Authority && Other && Other != this)
 	{
-		// Call OnPickupOverlap for functionality and ASC Calls to other actor
+		// Call PickupItem for functionality and ASC Calls to other actor
 		PickupItem(Cast<AGAS_TestCharacter>(Other));
 	}
 }
@@ -158,7 +159,7 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 		FGameplayEffectSpecHandle NewHandle = ASC->MakeOutgoingSpec(EffectClass, 0.f, EffectContext);
 		ASC->ApplyGameplayEffectSpecToSelf(*NewHandle.Data.Get());
 		// Debug Print ---------------------------------------------- Debug Print
-		UE_LOG(LogTemp, Display, TEXT("%d SpeedBoost tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.SpeedBoost")));
+		// UE_LOG(LogTemp, Display, TEXT("%d SpeedBoost tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.SpeedBoost")));
 	}
 }
 
