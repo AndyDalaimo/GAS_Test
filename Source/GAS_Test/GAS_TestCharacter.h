@@ -9,6 +9,7 @@
 #include "AbilitySet.h"
 #include "MyAttributeSet.h"
 #include "GameplayEffectTypes.h"
+#include "GameplayTagContainer.h"
 #include "InputActionValue.h"
 #include "GAS_TestCharacter.generated.h"
 
@@ -84,9 +85,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
-	// Attribute Set to attach to ASC
-	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem)
-	UMyAttributeSet* AttributeSet { nullptr };*/
+	UPROPERTY()
+		FGameplayTag ActiveGameplayTag;
 
 	UPROPERTY()
 	const UMyAttributeSet* AttributeSet;
@@ -107,6 +107,7 @@ protected:
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
+	void StopMovement();
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);

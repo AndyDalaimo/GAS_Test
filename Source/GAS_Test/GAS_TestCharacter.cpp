@@ -66,6 +66,9 @@ void AGAS_TestCharacter::BeginPlay()
 	// Instantiate the Attribute set onto the ASC
 	AttributeSet = AbilitySystemComponent->GetSet<UMyAttributeSet>();
 
+	// Tag container of Player Actions
+	ActiveGameplayTag = FGameplayTag::RequestGameplayTag("Event.Movement.Walking");
+
 	if (HasAuthority())
 	{
 		SetupInitialAbilitiesAndEffects();
@@ -96,6 +99,7 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGAS_TestCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AGAS_TestCharacter::StopMovement);
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGAS_TestCharacter::Look);
@@ -103,9 +107,9 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		// Set Bindings for AbilityInputs
 		for (const FAbilityInputToInputActionBinding& binding : AbilityInputBindings.Bindings)
 		{
-			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Triggered, this, &ThisClass::AbilityInputBindingPressedHandler, binding.AbilityInput);
+			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Triggered, this, &AGAS_TestCharacter::AbilityInputBindingPressedHandler, binding.AbilityInput);
 			//EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Triggered, this, &ThisClass::AbilityInputBindingPressedHandler);
-			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Completed, this, &ThisClass::AbilityInputBindingReleasedHandler, binding.AbilityInput);
+			EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Completed, this, &AGAS_TestCharacter::AbilityInputBindingReleasedHandler, binding.AbilityInput);
 			//EnhancedInputComponent->BindAction(binding.InputAction, ETriggerEvent::Completed, this, &ThisClass::AbilityInputBindingReleasedHandler);
 		}
 
@@ -115,10 +119,11 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 void AGAS_TestCharacter::Move(const FInputActionValue& Value)
 {
+	AbilitySystemComponent->AddLooseGameplayTag(ActiveGameplayTag, 1);
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
+	if (Controller != nullptr && !AbilitySystemComponent->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag("Event.Melee.Block")))
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -135,6 +140,12 @@ void AGAS_TestCharacter::Move(const FInputActionValue& Value)
 		AddMovementInput(RightDirection, MovementVector.X);
 	}
 }
+
+void AGAS_TestCharacter::StopMovement()
+{
+	AbilitySystemComponent->RemoveLooseGameplayTag(ActiveGameplayTag, 1);
+}
+	
 
 void AGAS_TestCharacter::Look(const FInputActionValue& Value)
 {
