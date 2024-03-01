@@ -127,7 +127,7 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 	if (IsValid(AbilitySet))
 	{
 
-		for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+		/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
 		{
 			if (!SetItem.GameplayAbility)
 			{
@@ -136,7 +136,8 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
 			ASC->GiveAbility(AbilitySpec);
-		}
+		}*/
+
 	}
 	else {
 		UE_LOG(LogTemp, Display, TEXT("Ability Set Attached to Pickup is not valid"));

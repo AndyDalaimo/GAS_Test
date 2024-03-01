@@ -36,6 +36,9 @@ protected:
 	UAbilitySet* AbilitySet { nullptr };
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	FAbilitySetItem ItemToPickup;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	TArray<TSubclassOf<class UGameplayEffect>> EffectClasses;
 
 	// Reference to Character interacting with this Pickup

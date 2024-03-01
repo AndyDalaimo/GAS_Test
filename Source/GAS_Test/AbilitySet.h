@@ -16,8 +16,7 @@ enum class EAbilityInput
 	SecondaryAttack = 3,
 };
 
-
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FAbilitySetItem
 {
 	GENERATED_USTRUCT_BODY()
