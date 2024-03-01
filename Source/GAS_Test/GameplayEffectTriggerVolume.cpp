@@ -131,6 +131,7 @@ void AGameplayEffectTriggerVolume::RemoveEffectFrom(AGAS_TestCharacter* Pawn)
 {
 	// Grab the ASC from the Pawn 
 	UAbilitySystemComponent* ASC = Pawn->GetAbilitySystemComponent();
+
 	
 	if (!ASC)
 	{
@@ -146,7 +147,10 @@ void AGameplayEffectTriggerVolume::RemoveEffectFrom(AGAS_TestCharacter* Pawn)
 		{
 			continue;
 		}
-
+		UGameplayEffect* NewEffect = Cast<UGameplayEffect>(EffectClass);
+		NewEffect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
+		NewEffect->DurationMagnitude = FGameplayEffectModifierMagnitude(FScalableFloat(7.0f));
+		
 		ASC->RemoveActiveGameplayEffectBySourceEffect(EffectClass, nullptr, 1);
 	}
 }
