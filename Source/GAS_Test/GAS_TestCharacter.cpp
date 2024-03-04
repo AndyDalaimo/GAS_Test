@@ -52,6 +52,8 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 	AbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(TEXT("AbiltySystemComp"));
 	// Create AttributeSet
 	AttributeSet = CreateDefaultSubobject<UMyAttributeSet>(TEXT("AttributeSet"));
+	// Create and attach Inventory Comp
+	InventoryComponent = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 

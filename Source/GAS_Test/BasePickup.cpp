@@ -127,16 +127,18 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 	if (IsValid(AbilitySet))
 	{
 
-		/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+		for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
 		{
 			if (!SetItem.GameplayAbility)
 			{
 				continue;
 			}
 
-			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
-			ASC->GiveAbility(AbilitySpec);
-		}*/
+			// FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(SetItem.GameplayAbility, 1, static_cast<int32>(SetItem.InputKey), this);
+			// ASC->GiveAbility(AbilitySpec);
+			Pawn->InventoryComponent->AddWeaponToInventory(SetItem.GameplayAbility, SetItem.InputKey);
+		}
+
 
 	}
 	else {

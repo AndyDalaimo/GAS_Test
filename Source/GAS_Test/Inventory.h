@@ -22,7 +22,7 @@ public:
 
 	// Add Weapon to Inventory by passing GA Weapon and InputKey
 	UFUNCTION(BlueprintCallable)
-		bool AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey);
+		void AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey);
 	
 
 protected:

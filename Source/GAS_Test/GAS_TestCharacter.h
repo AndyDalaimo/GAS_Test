@@ -8,6 +8,7 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySet.h"
 #include "MyAttributeSet.h"
+#include "Inventory.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "InputActionValue.h"
@@ -78,12 +79,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FGameplayEffectContextHandle GetGameplayEffectContexthandle();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
+		class UInventory* InventoryComponent;
 
 protected:
 
 	// Ability System Component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
+
 
 	UPROPERTY()
 		FGameplayTag ActiveGameplayTag;

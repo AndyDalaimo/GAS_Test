@@ -28,12 +28,13 @@ void UInventory::BeginPlay()
 
 // Add New weapon into Inventory
 // Will grant the ability in this Actor Component's WeaponSet
-bool UInventory::AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey)
+void UInventory::AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey)
 {
 
-	/*if (IsValid(OwningCharacter.GetAbilitySystemComponent()) == false || IsValid(WeaponSet) == false)
+	if (IsValid(WeaponSet) == false)
 	{
-		return false;
+		UE_LOG(LogTemp, Error, TEXT("__FUNCTION__"));
+		return;
 	}
 
 	// Build SetItem Struct to pass into WeaponSet
@@ -43,10 +44,9 @@ bool UInventory::AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbi
 
 	// Add Weapon into 
 	WeaponSet->AbilitySetItems.Push(NewItem);
-		
-	WeaponAbilitySpecHandles.Append(WeaponSet->GrantAbilitiesToAbilitySystem(OwningCharacter->GetAbilitySystemComponent()));*/
 
-	return true;
+
+	// WeaponAbilitySpecHandles.Append(WeaponSet->GrantAbilitiesToAbilitySystem(OwningCharacter->GetAbilitySystemComponent()));
 	
 }
 
