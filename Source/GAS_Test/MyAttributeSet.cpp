@@ -43,7 +43,7 @@ void UMyAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 void UMyAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
-
+	
 
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{

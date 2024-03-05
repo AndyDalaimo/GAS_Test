@@ -28,40 +28,29 @@ void UInventory::BeginPlay()
 
 // Add New weapon into Inventory
 // Will grant the ability in this Actor Component's WeaponSet
-void UInventory::AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey)
+void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)
 {
+	// Check if Item is already in Inventory, If true, Do not add
+	bool addItem = true;
 
-	if (IsValid(WeaponSet) == false)
+	for (FAbilitySetItem item : WeaponSet)
 	{
-		UE_LOG(LogTemp, Error, TEXT("__FUNCTION__"));
-		return;
-	}
-
-	// Build SetItem Struct to pass into WeaponSet
-	FAbilitySetItem NewItem;
-	NewItem.GameplayAbility = Weapon;
-	NewItem.InputKey = InputKey;
-	bool addItem = false;
-
-	for (FAbilitySetItem item : WeaponSet->AbilitySetItems)
-	{
-		if (item.GameplayAbility != Weapon)
+		if (item.GameplayAbility.Get()->GetName().Compare(NewItem.GameplayAbility.Get()->GetName()) == 0)
 		{
-			addItem = true;
+			addItem = false;
 		}
 	}
 
-	// Add Weapon into 
-	if (addItem) WeaponSet->AbilitySetItems.Push(NewItem);
+	if (addItem) WeaponSet.Push(NewItem);
 	
-
-
-	// WeaponAbilitySpecHandles.Append(WeaponSet->GrantAbilitiesToAbilitySystem(OwningCharacter->GetAbilitySystemComponent()));
-	
+	/*for (FAbilitySetItem item : WeaponSet)
+	{
+		UE_LOG(LogTemp, Display, TEXT("Item: %s"), *item.GameplayAbility.Get()->GetName());
+	}*/
 }
 
 // Return Current State of Weapon Set
-UAbilitySet* UInventory::GetWeaponSet()
+TArray<FAbilitySetItem> UInventory::GetWeaponSet()
 {
 	return WeaponSet;
 }

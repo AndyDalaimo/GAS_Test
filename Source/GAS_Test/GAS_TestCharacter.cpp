@@ -55,6 +55,11 @@ AGAS_TestCharacter::AGAS_TestCharacter(const FObjectInitializer& ObjectInitializ
 	// Create and attach Inventory Comp
 	InventoryComponent = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
+	// Restricted Movement Tags
+	RestrictedMovementTags.AddTag(FGameplayTag::RequestGameplayTag("State.Dead"));
+	RestrictedMovementTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Melee.Block"));
+	RestrictedMovementTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Weapon.Powerup"));
+
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
@@ -132,7 +137,7 @@ void AGAS_TestCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr && !AbilitySystemComponent->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag("Event.Melee.Block")))
+	if (Controller != nullptr && !AbilitySystemComponent->HasAnyMatchingGameplayTags(RestrictedMovementTags))
 	{
 		// find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -176,12 +181,14 @@ void AGAS_TestCharacter::OpenInventory(const FInputActionValue& Value)
 
 	if (IsValid(InventoryComponent))
 	{
-		// TODO
 		// Print All of the Gameplay Abilities in the Inventory Here
-		UE_LOG(LogTemp, Display, TEXT("Inventory Item"));
+		for (FAbilitySetItem item : InventoryComponent->GetWeaponSet())
+		{
+			UE_LOG(LogTemp, Display, TEXT("Item: %s"), *item.GameplayAbility.Get()->GetName());
+		}
 	}
 	else {
-		UE_LOG(LogTemp, Display, TEXT("Inventory Empty"));
+		UE_LOG(LogTemp, Display, TEXT("Inventory not Valid"));
 	}
 	
 }
@@ -244,6 +251,7 @@ void AGAS_TestCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& 
 	if (FMath::IsNearlyEqual(onAttributeChangeData.NewValue, 0.0f) && onAttributeChangeData.OldValue > 0)
 	{
 		// When health reaches zero, initiate some death sequence 
+		AbilitySystemComponent->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead"));
 	}
 }
 

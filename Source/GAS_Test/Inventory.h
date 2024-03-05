@@ -22,10 +22,10 @@ public:
 
 	// Add Weapon to Inventory by passing GA Weapon and InputKey
 	UFUNCTION(BlueprintCallable)
-		void AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey);
+		void AddWeaponToInventory(FAbilitySetItem NewItem);
 
 	UFUNCTION(BlueprintCallable)
-		UAbilitySet* GetWeaponSet();
+		TArray<FAbilitySetItem> GetWeaponSet();
 	
 
 protected:
@@ -36,7 +36,7 @@ protected:
 		UAbilitySystemComponent* OwningASC;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory|Weapons")
-		UAbilitySet* WeaponSet { nullptr };
+		TArray<FAbilitySetItem> WeaponSet;
 
 	UPROPERTY(Transient)
 		TArray<FGameplayAbilitySpecHandle> WeaponAbilitySpecHandles;

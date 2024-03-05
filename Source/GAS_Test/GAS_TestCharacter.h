@@ -95,6 +95,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = Input)
+		FGameplayTagContainer RestrictedMovementTags;
 
 	UPROPERTY()
 		FGameplayTag ActiveGameplayTag;
