@@ -33,7 +33,7 @@ protected:
 	float RespawnTime;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
-	UAbilitySet* AbilitySet { nullptr };
+	UAbilitySet* AbilitySet;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	FAbilitySetItem ItemToPickup;

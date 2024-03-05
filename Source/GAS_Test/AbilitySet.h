@@ -14,6 +14,7 @@ enum class EAbilityInput
 	Jump = 1,
 	PrimaryAttack = 2,
 	SecondaryAttack = 3,
+	Ability = 4,
 };
 
 USTRUCT(BlueprintType)

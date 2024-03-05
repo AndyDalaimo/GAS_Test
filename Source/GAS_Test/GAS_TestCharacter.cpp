@@ -106,6 +106,9 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGAS_TestCharacter::Look);
 
+		// Inventory
+		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Completed, this, &AGAS_TestCharacter::OpenInventory);
+
 		// Set Bindings for AbilityInputs
 		for (const FAbilityInputToInputActionBinding& binding : AbilityInputBindings.Bindings)
 		{
@@ -118,6 +121,10 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	}
 
 }
+
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------- Input Action Delegate Functions -----------------------------------
+// ---------------------------------------------------------------------------------------------------
 
 void AGAS_TestCharacter::Move(const FInputActionValue& Value)
 {
@@ -162,12 +169,33 @@ void AGAS_TestCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+// Open Inventory and Show current Items in CharacterInventory DataAsset
+// TODO -- Create readable UI for this instead of printing each element
+void AGAS_TestCharacter::OpenInventory(const FInputActionValue& Value)
+{
+
+	if (IsValid(InventoryComponent))
+	{
+		// TODO
+		// Print All of the Gameplay Abilities in the Inventory Here
+		UE_LOG(LogTemp, Display, TEXT("Inventory Item"));
+	}
+	else {
+		UE_LOG(LogTemp, Display, TEXT("Inventory Empty"));
+	}
+	
+}
+
+
+// ---------------------------------------------------------------------------------------------------
+// ------------------------------------ ASC Setup Functions ------------------------------------------
+// ---------------------------------------------------------------------------------------------------
+
 // Return the ASC
 UAbilitySystemComponent* AGAS_TestCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
-
 
 void AGAS_TestCharacter::SetupInitialAbilitiesAndEffects()
 {
@@ -254,6 +282,11 @@ UAbilitySet* AGAS_TestCharacter::GetAbilitySet()
 	else return InitialAbilitySet;
 }
 
+// Add new abilities from Pickup (Stored in Inventory) to ASC
+void AGAS_TestCharacter::GrantNewAbility(UAbilitySet* NewAbilitySet)
+{
+	InitiallyGrantedAbilitySpecHandles.Append(NewAbilitySet->GrantAbilitiesToAbilitySystem(AbilitySystemComponent));
+}
 
 // MIGHT NOT NEED THIS
 // On Gameplay Effects, the pickup class will create new EffectContext to add to ASC of Pawn
@@ -262,4 +295,6 @@ FGameplayEffectContextHandle AGAS_TestCharacter::GetGameplayEffectContexthandle(
 	if (GEContexthandle.IsValid()) return GEContexthandle;
 	else return FGameplayEffectContextHandle();
 }
+
+
 

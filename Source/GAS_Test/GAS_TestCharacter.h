@@ -66,6 +66,10 @@ class AGAS_TestCharacter : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	// Inventory Input Action. 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InventoryAction;
+
 public:
 	AGAS_TestCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -81,6 +85,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
 		class UInventory* InventoryComponent;
+
+	UFUNCTION()
+		void GrantNewAbility(UAbilitySet* NewAbilitySet);
 
 protected:
 
@@ -115,6 +122,10 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	// Called for Opening Inventory
+	// TODO -- Tie this to UI event. Currently printing items in Character Inventory
+	void OpenInventory(const FInputActionValue& Value);
 
 	UFUNCTION()
 	void SetupInitialAbilitiesAndEffects();

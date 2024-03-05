@@ -41,13 +41,29 @@ void UInventory::AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbi
 	FAbilitySetItem NewItem;
 	NewItem.GameplayAbility = Weapon;
 	NewItem.InputKey = InputKey;
+	bool addItem = false;
+
+	for (FAbilitySetItem item : WeaponSet->AbilitySetItems)
+	{
+		if (item.GameplayAbility != Weapon)
+		{
+			addItem = true;
+		}
+	}
 
 	// Add Weapon into 
-	WeaponSet->AbilitySetItems.Push(NewItem);
+	if (addItem) WeaponSet->AbilitySetItems.Push(NewItem);
+	
 
 
 	// WeaponAbilitySpecHandles.Append(WeaponSet->GrantAbilitiesToAbilitySystem(OwningCharacter->GetAbilitySystemComponent()));
 	
+}
+
+// Return Current State of Weapon Set
+UAbilitySet* UInventory::GetWeaponSet()
+{
+	return WeaponSet;
 }
 
 

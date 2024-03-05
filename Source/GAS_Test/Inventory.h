@@ -23,6 +23,9 @@ public:
 	// Add Weapon to Inventory by passing GA Weapon and InputKey
 	UFUNCTION(BlueprintCallable)
 		void AddWeaponToInventory(TSubclassOf<UGameplayAbility> Weapon, EAbilityInput InputKey);
+
+	UFUNCTION(BlueprintCallable)
+		UAbilitySet* GetWeaponSet();
 	
 
 protected:
