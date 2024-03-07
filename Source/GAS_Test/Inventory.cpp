@@ -54,7 +54,9 @@ void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)
 	// Add new Ability to Set
 	if (addItem)
 	{
+		FGameplayAbilitySpec NewAbilitySpec = FGameplayAbilitySpec(NewItem.GameplayAbility, 0, static_cast<uint32>(NewItem.InputKey));
 		InventoryAbilitySet->AbilitySetItems.Push(NewItem);
+		
 	}
 
 }

@@ -36,7 +36,7 @@ protected:
 	FAbilitySetItem AbilityToPickup;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
-	FGameplayTag TagAppliedToPawnASC;
+	FGameplayTagContainer TagsAppliedToPawnASC;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	TArray<TSubclassOf<class UGameplayEffect>> EffectClasses;

@@ -122,10 +122,10 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 	// Add AbilitySetItem from Pickup into the Pawn's Inventory
 	// Grant new Ability to Pawn if Pickup has ability attached to it
-	if (AbilityToPickup.GameplayAbility && TagAppliedToPawnASC != FGameplayTag::EmptyTag)
+	if (AbilityToPickup.GameplayAbility && !TagsAppliedToPawnASC.IsEmpty())
 	{
 		Pawn->InventoryComponent->AddWeaponToInventory(AbilityToPickup);
-		Pawn->GetAbilitySystemComponent()->AddLooseGameplayTag(TagAppliedToPawnASC);
+		Pawn->GetAbilitySystemComponent()->AddLooseGameplayTags(TagsAppliedToPawnASC);
 		Pawn->GrantNewAbility(Pawn->InventoryComponent->InventoryAbilitySet);
 	}
 	else {

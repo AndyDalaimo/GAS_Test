@@ -27,6 +27,7 @@ public:
 	// Ability Set unique to Inventory Comp for equipping and unequipping abilities
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 		UAbilitySet* InventoryAbilitySet;
+
 	// Equip Ability
 	void SetAbilityToEquipped(int AbilityIndex);
 
