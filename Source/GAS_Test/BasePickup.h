@@ -33,10 +33,10 @@ protected:
 	float RespawnTime;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
-	UAbilitySet* AbilitySet;
+	FAbilitySetItem AbilityToPickup;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
-	FAbilitySetItem AbilityToPickup;
+	FGameplayTag TagAppliedToPawnASC;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	TArray<TSubclassOf<class UGameplayEffect>> EffectClasses;

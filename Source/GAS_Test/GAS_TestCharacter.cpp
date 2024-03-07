@@ -129,7 +129,6 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 
 void AGAS_TestCharacter::Move(const FInputActionValue& Value)
 {
-	AbilitySystemComponent->AddLooseGameplayTag(ActiveGameplayTag, 1);
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -175,7 +174,7 @@ void AGAS_TestCharacter::OpenInventory(const FInputActionValue& Value)
 		// Print All of the Gameplay Abilities in the Inventory Here
 		for (FAbilitySetItem item : InventoryComponent->InventoryAbilitySet->AbilitySetItems)
 		{
-			UE_LOG(LogTemp, Display, TEXT("Item: %s"), *item.GameplayAbility.Get()->GetName());
+			UE_LOG(LogTemp, Display, TEXT("Item: %s"), *item.GameplayAbility.Get()->GetName().LeftChop(2).RightChop(3));
 		}
 	}
 	else {

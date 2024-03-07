@@ -26,6 +26,16 @@ void UInventory::BeginPlay()
 	
 }
 
+
+// Set the Specified Ability to Equipped
+void UInventory::SetAbilityToEquipped(int AbilityIndex)
+{
+	if (AbilityIndex < InventoryAbilitySet->AbilitySetItems.Num())
+	{
+		InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.GetDefaultObject()->AbilityTags.AddTag(FGameplayTag::RequestGameplayTag("Ability.State.Equipped"));
+	}
+}
+
 // Add New weapon into Inventory
 // Will grant the ability in this Actor Component's WeaponSet
 void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)

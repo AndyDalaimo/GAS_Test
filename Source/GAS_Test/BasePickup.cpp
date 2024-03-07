@@ -122,20 +122,10 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 	// Add AbilitySetItem from Pickup into the Pawn's Inventory
 	// Grant new Ability to Pawn if Pickup has ability attached to it
-	if (AbilityToPickup.GameplayAbility)
+	if (AbilityToPickup.GameplayAbility && TagAppliedToPawnASC != FGameplayTag::EmptyTag)
 	{
-
-		/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
-		{
-			if (!SetItem.GameplayAbility)
-			{
-				continue;
-			}
-
-			Pawn->InventoryComponent->AddWeaponToInventory(SetItem);
-		}*/
-		
 		Pawn->InventoryComponent->AddWeaponToInventory(AbilityToPickup);
+		Pawn->GetAbilitySystemComponent()->AddLooseGameplayTag(TagAppliedToPawnASC);
 		Pawn->GrantNewAbility(Pawn->InventoryComponent->InventoryAbilitySet);
 	}
 	else {
@@ -158,8 +148,7 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 		// TODO -- Change when Characters have a Level associated with them
 		FGameplayEffectSpecHandle NewHandle = ASC->MakeOutgoingSpec(EffectClass, 0.f, EffectContext);
 		ASC->ApplyGameplayEffectSpecToSelf(*NewHandle.Data.Get());
-		// Debug Print ---------------------------------------------- Debug Print
-		// UE_LOG(LogTemp, Display, TEXT("%d SpeedBoost tags active."), ASC->GetGameplayTagCount(FGameplayTag::RequestGameplayTag("Effect.SpeedBoost")));
+
 	}
 }
 

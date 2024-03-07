@@ -96,9 +96,6 @@ protected:
 		FGameplayTagContainer RestrictedMovementTags;
 
 	UPROPERTY()
-		FGameplayTag ActiveGameplayTag;
-
-	UPROPERTY()
 	const UMyAttributeSet* AttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, Category = AbilitySystem)
