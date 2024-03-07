@@ -23,10 +23,10 @@ public:
 	// Add Weapon to Inventory by passing GA Weapon and InputKey
 	UFUNCTION(BlueprintCallable)
 		void AddWeaponToInventory(FAbilitySetItem NewItem);
-
-	UFUNCTION(BlueprintCallable)
-		TArray<FAbilitySetItem> GetWeaponSet();
 	
+	// Ability Set unique to Inventory Comp for equipping and unequipping abilities
+	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
+		UAbilitySet* InventoryAbilitySet;
 
 protected:
 	// Called when the game starts
@@ -35,12 +35,8 @@ protected:
 	UPROPERTY()
 		UAbilitySystemComponent* OwningASC;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Inventory|Weapons")
-		TArray<FAbilitySetItem> WeaponSet;
-
 	UPROPERTY(Transient)
 		TArray<FGameplayAbilitySpecHandle> WeaponAbilitySpecHandles;
-
 
 public:	
 	// Called every frame

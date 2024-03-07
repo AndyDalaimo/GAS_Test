@@ -79,9 +79,6 @@ public:
 	// Returns this Actor's AbilitySet
 	UFUNCTION(BlueprintCallable)
 		UAbilitySet* GetAbilitySet();
-
-	UFUNCTION(BlueprintCallable)
-		FGameplayEffectContextHandle GetGameplayEffectContexthandle();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystem, meta = (AllowPrivateAccess = "true"))
 		class UInventory* InventoryComponent;
@@ -120,7 +117,6 @@ protected:
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
-	void StopMovement();
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
@@ -128,6 +124,9 @@ protected:
 	// Called for Opening Inventory
 	// TODO -- Tie this to UI event. Currently printing items in Character Inventory
 	void OpenInventory(const FInputActionValue& Value);
+
+	// Equip Ability into Bound Input
+	void EquipAbility(int InventoryIndex);
 
 	UFUNCTION()
 	void SetupInitialAbilitiesAndEffects();

@@ -33,7 +33,7 @@ void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)
 	// Check if Item is already in Inventory, If true, Do not add
 	bool addItem = true;
 
-	for (FAbilitySetItem item : WeaponSet)
+	for (FAbilitySetItem item : InventoryAbilitySet->AbilitySetItems)
 	{
 		if (item.GameplayAbility.Get()->GetName().Compare(NewItem.GameplayAbility.Get()->GetName()) == 0)
 		{
@@ -41,20 +41,13 @@ void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)
 		}
 	}
 
-	if (addItem) WeaponSet.Push(NewItem);
-	
-	/*for (FAbilitySetItem item : WeaponSet)
+	// Add new Ability to Set
+	if (addItem)
 	{
-		UE_LOG(LogTemp, Display, TEXT("Item: %s"), *item.GameplayAbility.Get()->GetName());
-	}*/
-}
+		InventoryAbilitySet->AbilitySetItems.Push(NewItem);
+	}
 
-// Return Current State of Weapon Set
-TArray<FAbilitySetItem> UInventory::GetWeaponSet()
-{
-	return WeaponSet;
 }
-
 
 // Called every frame
 void UInventory::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
