@@ -120,13 +120,12 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 	UE_LOG(LogTemp, Display, TEXT("%s Pawn's ASC is Active."), *FString(Pawn->GetName()));
 
-	// Add Gameplay ability to the Pawn's Ability Set
-	// TODO ----------------------------------TODO
-	// Add Ability Set to BP Pickup
-	if (AbilitySet != nullptr)
+	// Add AbilitySetItem from Pickup into the Pawn's Inventory
+	// Grant new Ability to Pawn if Pickup has ability attached to it
+	if (AbilityToPickup.GameplayAbility)
 	{
 
-		for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
+		/*for (FAbilitySetItem SetItem : AbilitySet->AbilitySetItems)
 		{
 			if (!SetItem.GameplayAbility)
 			{
@@ -134,12 +133,13 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 			}
 
 			Pawn->InventoryComponent->AddWeaponToInventory(SetItem);
-		}
-		// Grant new Ability to Pawn if Pickup has ability attached to it
+		}*/
+		
+		Pawn->InventoryComponent->AddWeaponToInventory(AbilityToPickup);
 		Pawn->GrantNewAbility(Pawn->InventoryComponent->InventoryAbilitySet);
 	}
 	else {
-		UE_LOG(LogTemp, Display, TEXT("Ability Set Attached to Pickup is not valid"));
+		UE_LOG(LogTemp, Display, TEXT("Ability Attached to Pickup is not valid"));
 	}
 
 	// Create Gameplay effect context to Add to pawn
