@@ -134,7 +134,6 @@ void ABasePickup::GivePickupTo(AGAS_TestCharacter* Pawn)
 
 	// Create Gameplay effect context to Add to pawn
 	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
-
 	EffectContext.AddSourceObject(this);
 
 	// Add Gameplay Effect to Ability System Comp of interacting Pawn
