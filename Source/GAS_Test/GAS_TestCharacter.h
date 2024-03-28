@@ -69,6 +69,10 @@ class AGAS_TestCharacter : public ACharacter, public IAbilitySystemInterface
 	// Inventory Input Action. 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* InventoryAction;
+	
+	// Inventory Input Action. 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* CycleInventoryAction;
 
 public:
 	AGAS_TestCharacter(const FObjectInitializer& ObjectInitializer);
@@ -121,6 +125,8 @@ protected:
 	// Called for Opening Inventory
 	// TODO -- Tie this to UI event. Currently printing items in Character Inventory
 	void OpenInventory(const FInputActionValue& Value);
+
+	void CycleInventory(const FInputActionValue& Value);
 
 	// Equip Ability into Bound Input
 	void EquipAbility(int InventoryIndex);

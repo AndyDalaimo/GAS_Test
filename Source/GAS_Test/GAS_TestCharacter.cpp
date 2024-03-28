@@ -112,6 +112,10 @@ void AGAS_TestCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 		// Inventory
 		EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Completed, this, &AGAS_TestCharacter::OpenInventory);
 
+		// Cycle Inventory
+		EnhancedInputComponent->BindAction(CycleInventoryAction, ETriggerEvent::Completed, this, &AGAS_TestCharacter::CycleInventory);
+
+
 		// Set Bindings for AbilityInputs
 		for (const FAbilityInputToInputActionBinding& binding : AbilityInputBindings.Bindings)
 		{
@@ -183,6 +187,13 @@ void AGAS_TestCharacter::OpenInventory(const FInputActionValue& Value)
 		UE_LOG(LogTemp, Display, TEXT("Inventory not Valid"));
 	}
 	
+}
+
+// Call the function in Inventory Comp. Equip next item in line in Inventory
+void AGAS_TestCharacter::CycleInventory(const FInputActionValue& Value)
+{
+	InventoryComponent->CycleAbility();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, "Cycle Inventory Action");
 }
 
 

@@ -33,12 +33,10 @@ void UInventory::SetAbilityToEquipped(int AbilityIndex)
 	if (AbilityIndex < InventoryAbilitySet->AbilitySetItems.Num() && IsValid(OwningASC))
 	{
 		FString AbilityTag = InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.Get()->GetName().LeftChop(2).RightChop(3);
-		// this->SetAbilityToUnequipped(AbilityIndex);
 		OwningASC->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Unequipped")));
 		OwningASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Equipped")));
-		// InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.GetDefaultObject()->AbilityTags.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Unequipped")));
-		// InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.GetDefaultObject()->AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Equipped")));
-		// Set temp Item as equipped for Inventory
+
+		// Set the Currently equipped item
 		CurrentEquippedItem = InventoryAbilitySet->AbilitySetItems[AbilityIndex];
 		UE_LOG(LogTemp, Warning, TEXT("%s Ability Equipped"), *AbilityTag);
 	}
@@ -50,8 +48,6 @@ void UInventory::SetAbilityToUnequipped(int AbilityIndex)
 	if (AbilityIndex < InventoryAbilitySet->AbilitySetItems.Num())
 	{
 		FString AbilityTag = InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.Get()->GetName().LeftChop(2).RightChop(3);
-		// InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.GetDefaultObject()->AbilityTags.RemoveTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Equipped")));
-		// InventoryAbilitySet->AbilitySetItems[AbilityIndex].GameplayAbility.GetDefaultObject()->AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Unequipped")));
 		OwningASC->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Equipped")));
 		OwningASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag(FName("Inventory.Ability." + AbilityTag + ".Unequipped")));
 		UE_LOG(LogTemp, Warning, TEXT("%s Ability Unequipped"), *AbilityTag);
@@ -71,12 +67,12 @@ void UInventory::CycleAbility()
 			{
 				this->SetAbilityToUnequipped(i);
 				this->SetAbilityToEquipped(0);
-				continue;
+				break;
 			}
 			else {
 				this->SetAbilityToUnequipped(i);
 				this->SetAbilityToEquipped(i + 1);
-				continue;
+				break;
 			}
 		}
 	}
