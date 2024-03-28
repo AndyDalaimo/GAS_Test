@@ -97,7 +97,6 @@ void UInventory::AddWeaponToInventory(FAbilitySetItem NewItem)
 	if (addItem)
 	{
 		FGameplayAbilitySpec NewAbilitySpec = FGameplayAbilitySpec(NewItem.GameplayAbility, 0, static_cast<uint32>(NewItem.InputKey));
-		// InventoryAbilitySet->AbilitySetItems.Push(NewItem);
 		InventoryAbilitySet->AbilitySetItems.Insert(NewItem, 0);
 		// Equip newly picked up item, unequip previous weapon
 		this->SetAbilityToEquipped(0);
