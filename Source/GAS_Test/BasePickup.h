@@ -32,7 +32,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
 	float RespawnTime;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")
+	UPROPERTY(EditAnywhere, Category = "Pickup")
 	FAbilitySetItem AbilityToPickup;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Pickup")

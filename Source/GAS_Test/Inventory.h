@@ -20,6 +20,9 @@ public:
 	// Sets default values for this component's properties
 	UInventory();
 
+	UPROPERTY()
+		UAbilitySystemComponent* OwningASC;
+
 	// Add Weapon to Inventory by passing GA Weapon and InputKey
 	UFUNCTION(BlueprintCallable)
 		void AddWeaponToInventory(FAbilitySetItem NewItem);
@@ -28,19 +31,23 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 		UAbilitySet* InventoryAbilitySet;
 
-	// Equip Ability
+	// Equip/Unequip Ability
 	void SetAbilityToEquipped(int AbilityIndex);
+	void SetAbilityToUnequipped(int AbilityIndex);
+
+	// Cycle next item
+	void CycleAbility();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 
-	UPROPERTY()
-		UAbilitySystemComponent* OwningASC;
 
 	UPROPERTY(Transient)
 		TArray<FGameplayAbilitySpecHandle> WeaponAbilitySpecHandles;
+
+	FAbilitySetItem CurrentEquippedItem;
 
 public:	
 	// Called every frame

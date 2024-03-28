@@ -73,6 +73,8 @@ void AGAS_TestCharacter::BeginPlay()
 	// Instantiate the Attribute set onto the ASC
 	AttributeSet = AbilitySystemComponent->GetSet<UMyAttributeSet>();
 
+	InventoryComponent->OwningASC = GetAbilitySystemComponent();
+
 	if (HasAuthority())
 	{
 		SetupInitialAbilitiesAndEffects();
